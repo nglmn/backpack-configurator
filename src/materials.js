@@ -29,37 +29,36 @@ export const denimMaterial = new THREE.MeshPhysicalMaterial({
     clearcoat: 0.1,              // Додає легке покриття для блиску
     clearcoatRoughness: 0.9,     // Шорсткість покриття, щоб не було занадто блискучим
     reflectivity: 0.1,           // Легкий ефект відбивання для реалізму
-    envMapIntensity: 0.3,         // Імітація впливу оточення
-    color: '#A37B5C'
+    envMapIntensity: 0.3,
+    // color: '#A37B5C',
 });
 
-const textureDenimStraps = new THREE.TextureLoader();
-const denimStrapBaseColor = textureDenimStraps.load('/assets/textures/strap_baseColor.jpg');
-const denimStrapNormalMap = textureDenimStraps.load('/assets/textures/strap_normal.jpg');
-const denimStrapORMMap = textureDenimStraps.load('/assets/textures/strap_occlusionRoughnessMetallic.jpg');
-denimStrapBaseColor.wrapS = THREE.RepeatWrapping;
-denimStrapBaseColor.wrapT = THREE.RepeatWrapping;
-denimStrapBaseColor.repeat.set(1, -1);  // Налаштування повторення текстури
-denimStrapNormalMap.wrapS = THREE.RepeatWrapping;
-denimStrapNormalMap.wrapT = THREE.RepeatWrapping;
-denimStrapNormalMap.repeat.set(1, -1);
-denimStrapORMMap.wrapS = THREE.RepeatWrapping;
-denimStrapORMMap.wrapT = THREE.RepeatWrapping;
-denimStrapORMMap.repeat.set(1, -1);  // Налаштування повторення текстури
+const textureStraps = new THREE.TextureLoader();
+const strapBaseColor = textureStraps.load('/assets/textures/strap_baseColor.jpg');
+const strapNormalMap = textureStraps.load('/assets/textures/strap_normal.jpg');
+const strapORMMap = textureStraps.load('/assets/textures/strap_occlusionRoughnessMetallic.jpg');
+strapBaseColor.wrapS = THREE.RepeatWrapping;
+strapBaseColor.wrapT = THREE.RepeatWrapping;
+strapBaseColor.repeat.set(1, -1);  // Налаштування повторення текстури
+strapNormalMap.wrapS = THREE.RepeatWrapping;
+strapNormalMap.wrapT = THREE.RepeatWrapping;
+strapNormalMap.repeat.set(1, -1);
+strapORMMap.wrapS = THREE.RepeatWrapping;
+strapORMMap.wrapT = THREE.RepeatWrapping;
+strapORMMap.repeat.set(1, -1);  // Налаштування повторення текстури
 
-export const denimStrapMaterial = new THREE.MeshPhysicalMaterial({
-    map: denimStrapBaseColor,
-    normalMap: denimStrapNormalMap,
-    aoMap: denimStrapORMMap,
-    roughnessMap: denimStrapORMMap,
-    metalnessMap: denimStrapORMMap,
+export const strapsMaterial = new THREE.MeshPhysicalMaterial({
+    map: strapBaseColor,
+    normalMap: strapNormalMap,
+    aoMap: strapORMMap,
+    roughnessMap: strapORMMap,
+    metalnessMap: strapORMMap,
     roughness: 0.8,
     metalness: 1,
     clearcoat: 0.1,
     clearcoatRoughness: 0.9,
     reflectivity: 0.1,
     envMapIntensity: 0.3,
-    color: '#A37B5C'
 });
 
 /* fabric */
@@ -89,7 +88,7 @@ export const fabricMaterial = new THREE.MeshPhysicalMaterial({
     clearcoatRoughness: 0.9,     // Шорсткість покриття, щоб не було занадто блискучим
     reflectivity: 0.1,           // Легкий ефект відбивання для реалізму
     envMapIntensity: 0.3,         // Імітація впливу оточення
-    color: '#A37B5C'
+    // color: '#A37B5C',
 });
 
 
@@ -120,7 +119,7 @@ export const leatherMaterial = new THREE.MeshPhysicalMaterial({
     clearcoatRoughness: 0.7,     // Шорсткість покриття, щоб не було занадто блискучим
     reflectivity: 0.2,           // Легкий ефект відбивання для реалізму
     envMapIntensity: 0.9,         // Імітація впливу оточення
-    color: '#8B5727'
+    // color: '#8B5727'
 });
 
 /* hardware */
@@ -160,5 +159,16 @@ export const goldMaterial = new THREE.MeshPhysicalMaterial({
     reflectivity: 0.9,
     clearcoat: 1.0,
     clearcoatRoughness: 0.05,
-    color: '#E7B95C'
+    color: '#EABA55'
+});
+
+export const blackMetalMaterial = new THREE.MeshPhysicalMaterial({
+    map: silverBaseColor,
+    normalMap: silverNormalMap,
+    aoMap: silverORMMap,
+    metalness: 1,
+    roughness: 0.2,
+    envMapIntensity: 0,
+    reflectivity: 0.8,
+    color: "#31363F"
 });

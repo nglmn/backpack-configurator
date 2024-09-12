@@ -3,20 +3,63 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
 import { RectAreaLightHelper } from 'three/examples/jsm/helpers/RectAreaLightHelper.js';
 
-import { denimMaterial, denimStrapMaterial, silverMaterial, fabricMaterial, goldMaterial, leatherMaterial } from './materials';
+import { denimMaterial, strapsMaterial, silverMaterial, fabricMaterial, goldMaterial, leatherMaterial, blackMetalMaterial } from './materials';
 import { directionalLight, pointLight, rectLight } from './lights';
+
+
+const arButton = document.querySelector('.ar-btn');
+const modal = document.getElementById('arModal');
+const closeModal = document.getElementsByClassName('close')[0];
+const modelContainer = document.querySelector('.model-container');
+
+// Відкриття модального вікна при натисканні на кнопку
+arButton.onclick = function () {
+  modal.style.display = 'block';
+  modelContainer.style.display = 'none'
+};
+
+// Закриття модального вікна при натисканні на "x"
+closeModal.onclick = function () {
+  modal.style.display = 'none';
+  modelContainer.style.display = 'block'
+};
+
+// Закриття модального вікна при натисканні поза його межами
+window.onclick = function (event) {
+  if (event.target === modal) {
+    modal.style.display = 'none';
+  }
+};
+
+// Матеріали
+const bodyMaterials = {
+  denim: denimMaterial,
+  fabric: fabricMaterial,
+  leather: leatherMaterial
+};
+const hardwareMaterials = {
+  silver: silverMaterial,
+  gold: goldMaterial,
+  black: blackMetalMaterial
+}
+const bodyColor = {
+  brown: '#8B5727',
+  black: '#1D2125',
+  blue: '#01356D'
+}
+
 // Ініціалізуємо сцену
 const scene = new THREE.Scene();
 
 // Камера
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
 camera.position.z = 0.8;
 
 
 // Рендерер
 const renderer = new THREE.WebGLRenderer({ alpha: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+renderer.setSize(750, 750);
+modelContainer.appendChild(renderer.domElement);
 
 const pmremGenerator = new THREE.PMREMGenerator(renderer);
 
@@ -36,27 +79,24 @@ let backpack;
 const loader = new GLTFLoader();
 loader.load('/assets/backpack.glb', function (gltf) {
   backpack = gltf.scene;
-  backpack.position.set(0, -0.1, 0);
-  backpack.rotation.set(0.3, 0, 0);
+  backpack.scale.set(1.2, 1.2, 1.2)
+  backpack.position.set(0, -0.2, 0);
+  backpack.rotation.set(0.1, 0, 0);
   scene.add(backpack);
 
   backpack.traverse((child) => {
     if (child.isMesh) {
       child.castShadow = true;
       child.receiveShadow = true;
-      switch (child.name) {
-        case "Mesh": {
-          child.material = leatherMaterial
-          break;
-        };
-        case "Mesh_1": {
-          child.material = silverMaterial;
-          break;
-        };
-        case "Mesh_2": {
-          child.material = denimStrapMaterial;
-          break;
-        };
+      if (child.name === "Mesh") {
+        child.material = denimMaterial;
+        child.material.color.setHex(Number(bodyColor.brown.toString().replace('#', '0x')))
+      }
+      if (child.name === "Mesh_1") {
+        child.material = silverMaterial;
+      }
+      if (child.name === "Mesh_2") {
+        child.material.color.setHex(Number(bodyColor.brown.toString().replace('#', '0x')))
       }
     }
   });
@@ -86,68 +126,65 @@ function render() {
   if (backpack) {
     backpack.rotation.y += 0.005;
   }
-
   renderer.render(scene, camera);
 }
 
 render();
 
-// Створюємо матеріали
-// const materials = {
-//   denim: denimMaterial,
-//   fabric: fabricMaterial,
-//   leather: leatherMaterial
-// };
 
-// Створюємо фурнітуру (матеріали для металевих частин)
-// const hardwareMaterials = {
-//   silver: new THREE.MeshBasicMaterial({ color: "#fffddd" }),
-//   black: new THREE.MeshBasicMaterial({ color: 0x000000 }),
-//   gold: new THREE.MeshBasicMaterial({ color: 0xffd700 })
-// };
 
-// // Функції для оновлення матеріалів, кольорів і фурнітури
-// function updateMaterial(material) {
-//   if (backpack) {
-//     backpack.traverse((child) => {
-//       if (child.isMesh) {
-//         child.material = materials[material];
-//       }
-//     });
-//   }
-// }
+document.querySelectorAll('input[name="material"]').forEach((input) => {
+  input.addEventListener('change', (event) => {
+    const selectedMaterial = bodyMaterials[event.target.value];
+    const selectedColor = document.querySelector('input[name = "body-color"]:checked').value;
+    const color = bodyColor[selectedColor];
+    if (backpack) {
+      backpack.traverse((child) => {
+        if (child.isMesh) {
+          if (child.name === "Mesh") {
+            child.material = selectedMaterial;
+          }
+          if (child.name === "Mesh") {
+            child.material.color.setHex(Number(color.toString().replace('#', '0x')))
+          }
+          if (child.name === "Mesh_2") {
+            child.material.color.setHex(Number(color.toString().replace('#', '0x')))
+          }
+        }
+      });
+    }
+  });
+});
 
-// function updateColor(color) {
-//   if (backpack) {
-//     backpack.traverse((child) => {
-//       if (child.isMesh) {
-//         child.material.color.set(colors[color]);
-//       }
-//     });
-//   }
-// }
+document.querySelectorAll('input[name="hardware-color"]').forEach((input) => {
+  input.addEventListener('change', (event) => {
+    const selectedMaterial = hardwareMaterials[event.target.value];
+    if (backpack) {
+      backpack.traverse((child) => {
+        if (child.isMesh && child.name === "Mesh_1") {
+          child.material = selectedMaterial;
+        }
+      });
+    }
+  });
+});
 
-// function updateHardware(hardware) {
-//   if (backpack) {
-//     backpack.traverse((child) => {
-//       if (child.isMesh && child.name.includes('hardware')) { // Приклад пошуку фурнітури
-//         child.material = hardwareMaterials[hardware];
-//       }
-//     });
-//   }
-// }
-
-// // Відстеження вибору користувача
-// document.getElementById('material').addEventListener('change', (e) => {
-//   updateMaterial(e.target.value);
-// });
-
-// document.getElementById('color').addEventListener('change', (e) => {
-//   updateColor(e.target.value);
-// });
-
-// document.getElementById('hardware').addEventListener('change', (e) => {
-//   updateHardware(e.target.value);
-// });
+document.querySelectorAll('input[name="body-color"]').forEach((input) => {
+  input.addEventListener('change', (event) => {
+    const color = bodyColor[event.target.value];
+    if (backpack) {
+      backpack.traverse((child) => {
+        if (child.isMesh) {
+          if (child.name === "Mesh") {
+            child.material.color.setHex(Number(color.toString().replace('#', '0x')))
+          }
+          if (child.name === "Mesh_2") {
+            child.material.color.setHex(Number(color.toString().replace('#', '0x')))
+          }
+        }
+      });
+    }
+  });
+});
 
 

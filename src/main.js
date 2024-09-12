@@ -9,11 +9,11 @@ import { directionalLight, pointLight, rectLight } from './lights';
 
 const arButton = document.querySelector('.ar-btn');
 const modal = document.getElementById('arModal');
-const closeModal = document.getElementsByClassName('close')[0];
+const closeModalBtn = document.querySelector('.close');
 const modelContainer = document.querySelector('.model-container');
 
 
-// Матеріали
+/* backpack materials */
 const bodyMaterials = {
   denim: denimMaterial,
   fabric: fabricMaterial,
@@ -30,21 +30,22 @@ const bodyColor = {
   blue: '#01356D'
 }
 
-// Ініціалізуємо сцену
+/* scene */
 const scene = new THREE.Scene();
 
-// Камера
+/* camera */
 const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
 camera.position.z = 0.8;
 
 
-// Рендерер
+/* renderer */
 const renderer = new THREE.WebGLRenderer({ alpha: true });
 renderer.setSize(750, 750);
 modelContainer.appendChild(renderer.domElement);
 
 const pmremGenerator = new THREE.PMREMGenerator(renderer);
 
+/* HDRI map */
 const hdriLoader = new RGBELoader()
 hdriLoader.load('assets/lebombo_2k.hdr', function (texture) {
   const envMap = pmremGenerator.fromEquirectangular(texture).texture;
@@ -52,11 +53,11 @@ hdriLoader.load('assets/lebombo_2k.hdr', function (texture) {
   scene.environment = envMap
 });
 
-// Налаштування тіней
+/* scene shadow */
 renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap; // М'які тіні
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-// Завантажуємо модель рюкзака
+/* backpack */
 let backpack;
 const loader = new GLTFLoader();
 loader.load('/assets/backpack.glb', function (gltf) {
@@ -86,31 +87,30 @@ loader.load('/assets/backpack.glb', function (gltf) {
   });
 });
 
+
+/* backdrop plane */
 const planeGeometry = new THREE.PlaneGeometry(1, 1);
-
-// Створюємо матеріал для площини (тут базовий матеріал з червоним кольором)
 const planeMaterial = new THREE.ShadowMaterial({ opacity: 0.5 })
-
-// Створюємо Mesh (площину) і додаємо в сцену
 const plane = new THREE.Mesh(planeGeometry, planeMaterial);
-plane.position.set(0, -0.2, 0);  // Позиціонуємо площину на сцені
+plane.position.set(0, -0.2, 0);
 plane.rotation.x = 90;
 plane.receiveShadow = true;
 scene.add(plane);
 
+/* lights */
 scene.add(directionalLight);
 scene.add(pointLight);
 scene.add(rectLight)
 
-// Управління обертанням мишкою
+/* mouse control */
 let isDragging = false;
 let previousMousePosition = { x: 0, y: 0 };
 
-modelContainer.addEventListener('mousedown', (event) => {
+modelContainer.addEventListener('mousedown', () => {
   isDragging = true;
 });
 
-modelContainer.addEventListener('mouseup', (event) => {
+modelContainer.addEventListener('mouseup', () => {
   isDragging = false;
 });
 
@@ -120,8 +120,8 @@ modelContainer.addEventListener('mousemove', (event) => {
       x: event.clientX - previousMousePosition.x,
       y: event.clientY - previousMousePosition.y
     };
-    backpack.rotation.y += deltaMove.x * 0.01;
-    backpack.rotation.x -= deltaMove.y * 0.01;
+    backpack.rotation.y += deltaMove.x * 0.005;
+    backpack.rotation.x -= deltaMove.y * 0.005;
   }
   previousMousePosition = {
     x: event.clientX,
@@ -129,7 +129,7 @@ modelContainer.addEventListener('mousemove', (event) => {
   };
 });
 
-// Управління обертанням пальцем
+/* finger control */
 modelContainer.addEventListener('touchstart', (event) => {
   isDragging = true;
   previousMousePosition = {
@@ -156,17 +156,21 @@ modelContainer.addEventListener('touchmove', (event) => {
     };
   }
 });
-// Анімація обертання
+
+
+/* render animation */
 function render() {
   requestAnimationFrame(render);
-
+  if (backpack) {
+    backpack.rotation.y += 0.002
+  }
   renderer.render(scene, camera);
 }
 
 render();
 
 
-
+/* matherial change logic*/
 document.querySelectorAll('input[name="material"]').forEach((input) => {
   input.addEventListener('change', (event) => {
     const selectedMaterial = bodyMaterials[event.target.value];
@@ -222,20 +226,16 @@ document.querySelectorAll('input[name="body-color"]').forEach((input) => {
 });
 
 
+/* modal */
 // Відкриття модального вікна при натисканні на кнопку
-document.querySelector('.ar-btn').onclick = function () {
-  document.getElementById('arModal').style.display = 'block';
+arButton.onclick = function () {
+  modal.style.display = 'block';
+  scene.remove(backpack);
+  modelContainer.appendChild(modal)
 };
 
 // Закриття модального вікна при натисканні на "x"
-document.querySelector('.close').onclick = function () {
-  document.getElementById('arModal').style.display = 'none';
+closeModalBtn.onclick = function () {
+  modal.style.display = 'none';
+  scene.add(backpack);
 };
-
-// Закриття модального вікна при натисканні поза його межами
-window.onclick = function (event) {
-  if (event.target === document.getElementById('arModal')) {
-    document.getElementById('arModal').style.display = 'none';
-  }
-};
-

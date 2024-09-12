@@ -5,7 +5,7 @@ body {
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f4f4f4;
+  background-color: #ffffff;
 }
 h3{
   color: rgb(26, 26, 26);
@@ -57,11 +57,10 @@ li{
   padding-top: 10px;
   border-top: 1px solid black;
 }
-/* Ховаємо стандартний інпут */
+
 input[type="radio"] {
   display: none;
 }
-
 
 label {
   height: fit-content;
@@ -80,7 +79,7 @@ label {
   text-align: left;
 }
 
-label::before {
+.hardware-color-controls label::before {
   content: "";
   display: block;
   width: 40px;
@@ -89,7 +88,15 @@ label::before {
   margin-bottom: 5px;
 }
 
-/* Кольори для фурнітури */
+.body-color-controls label::before {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-bottom: 5px;
+}
+
 input[value="silver"] + label::before {
   background: linear-gradient(135deg, rgba(157,157,157,1) 0%, rgba(255,255,255,1) 59%, rgba(162,162,162,1) 100%);
 }
@@ -103,7 +110,6 @@ input[value="black"] + label::before {
   background-color: #1A1A1A;
 }
 
-/* Кольори для корпусу */
 input[value="brown"] + label::before {
   background-color: #8B4512;
 }
@@ -112,49 +118,124 @@ input[value="blue"] + label::before {
   background-color: #104D97;
 }
 
-/* Бордер навколо активного елемента */
 input[type="radio"]:checked + label {
-  border-color: blue;
+  color: #4169E1;
 }
 
+.material-controls{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+.material-controls label {
+  height: fit-content;
+  width: fit-content;
+  display: inline-block;
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: transparent;
+  border-radius: 20px;
+  border: 1px solid #000000;
+  transition: background-color 0.3s, color 0.3s;
+}
 
+.material-controls input[type="radio"] {
+  display: none
+}
+
+.material-controls input[type="radio"]:checked + label {
+  border-color: #4169E1;
+  color: #4169E1;
+}
+
+.material-controls label:hover {
+  background-color: #ebebeb;
+}
+
+svg{
+  margin-right: 5px;
+}
 .ar-btn{
+  color: rgb(255, 255, 255);
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 17px;
+  letter-spacing: 0%;
+  text-align: left;
   position: fixed;
+  width: fit-content;
+  height: fit-content;
   top: 20px;
   right: 50%;
-  padding: 10px 20px;
-  background-color: #007bff;
+  transform: translateX(50%);
+  padding: 11px 14px;
+  background-color: #4169E1;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 20px;
   cursor: pointer;
+}
+.ar-btn:hover{
+  background-color: #4a77ff;
 }
 
 
 .modal {
   display: none;
-  position: fixed;
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.5); 
+  width: fit-content;
+  border: 1px solid rgb(65, 105, 225);
+  border-radius: 30px;
+  background: rgb(255, 255, 255);
+  padding: 40px;
+
+  
 }
 
 .modal-content {
   background-color: #fff;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
-  max-width: 500px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  justify-content: space-between;
+  align-items: center;
 }
 
+.modal-text{
+  margin: 0;
+  width: 225px;
+  color: rgb(65, 105, 225);
+  font-family: Inter;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 22px;
+  letter-spacing: 0%;
+  text-align: center;
+}
+.img-container{
+  width: 190px;
+  height: 190px;
+  border: 1px solid rgb(65, 105, 225);
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#qr-code{
+  width: 130px;
+  height: 130px;
+}
 .close {
-  color: #aaa;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  color: #4a77ff;
   float: right;
   font-size: 28px;
   font-weight: bold;
@@ -163,6 +244,6 @@ input[type="radio"]:checked + label {
 
 .close:hover,
 .close:focus {
-  color: black;
+  color: #3c5cbd;
   text-decoration: none;
 }

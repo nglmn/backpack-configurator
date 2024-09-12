@@ -7,7 +7,12 @@
 		<link rel="stylesheet" href="/src/style/style.css" />
 	</head>
 	<body>
-		<button class="ar-btn">See in Real Life</button>
+		<button class="ar-btn">
+			<svg width="13" height="13">
+				<use href="assets/icons.svg#icon-Vector" />
+			</svg>
+			See in Real Life
+		</button>
 		<div class="container">
 			<div class="model-container"></div>
 			<div class="controls-container">
@@ -104,13 +109,16 @@
 			</div>
 		</div>
 
-		<!-- Модальне вікно -->
 		<div id="arModal" class="modal">
 			<div class="modal-content">
 				<span class="close">&times;</span>
-				<h2>Scan the QR code with your phone</h2>
-				<p>Within 1-3 seconds the AR function opens on your phone.</p>
-				<img src="/assets/qr.png" alt="QR code" id="qr-code" />
+				<p class="modal-text">
+					Scan the QR code with your phone Within 1-3 seconds the AR
+					function opens on your phone.
+				</p>
+				<div class="img-container">
+					<img src="/assets/qr.png" alt="QR code" id="qr-code" />
+				</div>
 			</div>
 		</div>
 

@@ -12,24 +12,6 @@ const modal = document.getElementById('arModal');
 const closeModal = document.getElementsByClassName('close')[0];
 const modelContainer = document.querySelector('.model-container');
 
-// Відкриття модального вікна при натисканні на кнопку
-arButton.onclick = function () {
-  modal.style.display = 'block';
-  modelContainer.style.display = 'none'
-};
-
-// Закриття модального вікна при натисканні на "x"
-closeModal.onclick = function () {
-  modal.style.display = 'none';
-  modelContainer.style.display = 'block'
-};
-
-// Закриття модального вікна при натисканні поза його межами
-window.onclick = function (event) {
-  if (event.target === modal) {
-    modal.style.display = 'none';
-  }
-};
 
 // Матеріали
 const bodyMaterials = {
@@ -79,10 +61,12 @@ let backpack;
 const loader = new GLTFLoader();
 loader.load('/assets/backpack.glb', function (gltf) {
   backpack = gltf.scene;
-  backpack.scale.set(1.2, 1.2, 1.2)
-  backpack.position.set(0, -0.2, 0);
+  backpack.scale.set(1, 1, 1)
+  backpack.position.set(0, 0, 0);
   backpack.rotation.set(0.1, 0, 0);
   scene.add(backpack);
+
+  // document.querySelector('a-maker').appendChild(backpack)
 
   backpack.traverse((child) => {
     if (child.isMesh) {
@@ -118,14 +102,64 @@ scene.add(directionalLight);
 scene.add(pointLight);
 scene.add(rectLight)
 
+// Управління обертанням мишкою
+let isDragging = false;
+let previousMousePosition = { x: 0, y: 0 };
 
+modelContainer.addEventListener('mousedown', (event) => {
+  isDragging = true;
+});
+
+modelContainer.addEventListener('mouseup', (event) => {
+  isDragging = false;
+});
+
+modelContainer.addEventListener('mousemove', (event) => {
+  if (isDragging && backpack) {
+    const deltaMove = {
+      x: event.clientX - previousMousePosition.x,
+      y: event.clientY - previousMousePosition.y
+    };
+    backpack.rotation.y += deltaMove.x * 0.01;
+    backpack.rotation.x -= deltaMove.y * 0.01;
+  }
+  previousMousePosition = {
+    x: event.clientX,
+    y: event.clientY
+  };
+});
+
+// Управління обертанням пальцем
+modelContainer.addEventListener('touchstart', (event) => {
+  isDragging = true;
+  previousMousePosition = {
+    x: event.touches[0].clientX,
+    y: event.touches[0].clientY
+  };
+});
+
+modelContainer.addEventListener('touchend', (event) => {
+  isDragging = false;
+});
+
+modelContainer.addEventListener('touchmove', (event) => {
+  if (isDragging && backpack) {
+    const deltaMove = {
+      x: event.touches[0].clientX - previousMousePosition.x,
+      y: event.touches[0].clientY - previousMousePosition.y
+    };
+    backpack.rotation.y += deltaMove.x * 0.01;
+    backpack.rotation.x -= deltaMove.y * 0.01;
+    previousMousePosition = {
+      x: event.touches[0].clientX,
+      y: event.touches[0].clientY
+    };
+  }
+});
 // Анімація обертання
 function render() {
   requestAnimationFrame(render);
 
-  if (backpack) {
-    backpack.rotation.y += 0.005;
-  }
   renderer.render(scene, camera);
 }
 
@@ -187,4 +221,21 @@ document.querySelectorAll('input[name="body-color"]').forEach((input) => {
   });
 });
 
+
+// Відкриття модального вікна при натисканні на кнопку
+document.querySelector('.ar-btn').onclick = function () {
+  document.getElementById('arModal').style.display = 'block';
+};
+
+// Закриття модального вікна при натисканні на "x"
+document.querySelector('.close').onclick = function () {
+  document.getElementById('arModal').style.display = 'none';
+};
+
+// Закриття модального вікна при натисканні поза його межами
+window.onclick = function (event) {
+  if (event.target === document.getElementById('arModal')) {
+    document.getElementById('arModal').style.display = 'none';
+  }
+};
 

@@ -16,6 +16,18 @@
 		<script src="https://cdn.rawgit.com/jeromeetienne/ar.js/master/aframe/build/aframe-ar.js"></script>
 	</head>
 	<body>
+		<a-scene embedded arj></a-scene>
+			<a-marker type="pattern" url="pattern-qr (1).patt">
+				<a-entity
+					id="backpack-model"
+					gltf-model="url(/backpack.glb)"
+					scale="1 1 1"
+					position="0 0 0"
+				></a-entity>
+			</a-marker>
+			<a-entity camera></a-entity>
+		</a-scene>
+		
 		<button class="ar-btn">
 			<svg width="13" height="13">
 				<use href="/icons.svg#icon-Vector" />
@@ -130,19 +142,6 @@
 				</div>
 			</div>
 		</div>
-
-		<a-scene embedded arjs="sourceType: webcam; markersAreaEnabled: true;">
-			<a-marker type="pattern" url="pattern-qr.patt">
-				<a-entity
-					id="backpack-model"
-					gltf-model="url(/backpack.glb)"
-					scale="1 1 1"
-					position="0 0 0"
-				></a-entity>
-			</a-marker>
-			<a-entity camera></a-entity>
-		</a-scene>
-
 		<script type="module" src="/src/main.js"></script>
 	</body>
 </html>

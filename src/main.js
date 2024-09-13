@@ -8,6 +8,7 @@ import { directionalLight, pointLight, rectLight } from './lights';
 
 
 const arButton = document.querySelector('.ar-btn');
+const arScene = document.querySelector('a-scene');
 const modal = document.getElementById('arModal');
 const closeModalBtn = document.querySelector('.close');
 const modelContainer = document.querySelector('.model-container');
@@ -92,63 +93,11 @@ scene.add(directionalLight);
 scene.add(pointLight);
 scene.add(rectLight)
 
-// /* mouse control */
-// let isDragging = false;
-// let previousMousePosition = { x: 0, y: 0 };
-
-// modelContainer.addEventListener('mousedown', () => {
-//   isDragging = true;
-// });
-
-// modelContainer.addEventListener('mouseup', () => {
-//   isDragging = false;
-// });
-
-// modelContainer.addEventListener('mousemove', (event) => {
-//   if (isDragging && backpack) {
-//     const deltaMove = {
-//       x: event.clientX - previousMousePosition.x,
-//       y: event.clientY - previousMousePosition.y
-//     };
-//     backpack.rotation.y += deltaMove.x * 0.005;
-//     backpack.rotation.x -= deltaMove.y * 0.005;
-//   }
-//   previousMousePosition = {
-//     x: event.clientX,
-//     y: event.clientY
-//   };
-// });
-
-// /* finger control */
-// modelContainer.addEventListener('touchstart', (event) => {
-//   isDragging = true;
-//   previousMousePosition = {
-//     x: event.touches[0].clientX,
-//     y: event.touches[0].clientY
-//   };
-// });
-
-// modelContainer.addEventListener('touchend', (event) => {
-//   isDragging = false;
-// });
-
-// modelContainer.addEventListener('touchmove', (event) => {
-//   if (isDragging && backpack) {
-//     const deltaMove = {
-//       x: event.touches[0].clientX - previousMousePosition.x,
-//       y: event.touches[0].clientY - previousMousePosition.y
-//     };
-//     backpack.rotation.y += deltaMove.x * 0.01;
-//     backpack.rotation.x -= deltaMove.y * 0.01;
-//     previousMousePosition = {
-//       x: event.touches[0].clientX,
-//       y: event.touches[0].clientY
-//     };
-//   }
-// });
-
 /* orbit controls */
 const orbitControls = new OrbitControls(camera, renderer.domElement);
+orbitControls.enableZoom = true;
+orbitControls.minDistance = 0.7;
+orbitControls.maxDistance = 0.9;
 
 /* render animation */
 function render() {
@@ -163,7 +112,7 @@ function render() {
 render();
 
 
-/* matherial change logic*/
+/* matherial change */
 document.querySelectorAll('input[name="material"]').forEach((input) => {
   input.addEventListener('change', (event) => {
     const selectedMaterial = bodyMaterials[event.target.value];
@@ -187,6 +136,7 @@ document.querySelectorAll('input[name="material"]').forEach((input) => {
   });
 });
 
+/* hardware change */
 document.querySelectorAll('input[name="hardware-color"]').forEach((input) => {
   input.addEventListener('change', (event) => {
     const selectedMaterial = hardwareMaterials[event.target.value];
@@ -200,6 +150,7 @@ document.querySelectorAll('input[name="hardware-color"]').forEach((input) => {
   });
 });
 
+/* color change */
 document.querySelectorAll('input[name="body-color"]').forEach((input) => {
   input.addEventListener('change', (event) => {
     const color = bodyColor[event.target.value];
@@ -220,14 +171,13 @@ document.querySelectorAll('input[name="body-color"]').forEach((input) => {
 
 
 /* modal */
-// Відкриття модального вікна при натисканні на кнопку
+/* open */
 arButton.onclick = function () {
   modal.style.display = 'block';
   scene.remove(backpack);
   modelContainer.appendChild(modal)
 };
-
-// Закриття модального вікна при натисканні на "x"
+/* close */
 closeModalBtn.onclick = function () {
   modal.style.display = 'none';
   scene.add(backpack);

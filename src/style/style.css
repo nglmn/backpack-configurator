@@ -8,6 +8,7 @@ body {
   height: 100vh;
   background-color: #ffffff;
 }
+
 h3{
   color: rgb(26, 26, 26);
   font-family: Inter;
@@ -50,6 +51,10 @@ li{
 .controls-container{
  position: absolute;
  bottom: 200px;
+ background-color: '#ffffff';
+ border-radius: 60px;
+ padding: 20px 60px;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.123);
 }
 .controls{
   display: flex;

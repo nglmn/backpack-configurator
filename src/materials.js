@@ -2,9 +2,9 @@ import * as THREE from 'three';
 
 /* denim */
 const textureLoaderDenimBase = new THREE.TextureLoader();
-const denimBaseColor = textureLoaderDenimBase.load('/assets/textures/denim_baseColor.jpg');
-const denimNormalMap = textureLoaderDenimBase.load('/assets/textures/denim_normal.jpg');
-const denimORMMap = textureLoaderDenimBase.load('/assets/textures/denim_occlusionRoughnessMetallic.jpg');
+const denimBaseColor = textureLoaderDenimBase.load('/textures/denim_baseColor.jpg');
+const denimNormalMap = textureLoaderDenimBase.load('/textures/denim_normal.jpg');
+const denimORMMap = textureLoaderDenimBase.load('/textures/denim_occlusionRoughnessMetallic.jpg');
 denimBaseColor.wrapS = THREE.RepeatWrapping;
 denimBaseColor.wrapT = THREE.RepeatWrapping;
 denimBaseColor.repeat.set(1, -1);
@@ -32,9 +32,9 @@ export const denimMaterial = new THREE.MeshPhysicalMaterial({
 
 /* straps */
 const textureStraps = new THREE.TextureLoader();
-const strapBaseColor = textureStraps.load('/assets/textures/strap_baseColor.jpg');
-const strapNormalMap = textureStraps.load('/assets/textures/strap_normal.jpg');
-const strapORMMap = textureStraps.load('/assets/textures/strap_occlusionRoughnessMetallic.jpg');
+const strapBaseColor = textureStraps.load('/textures/strap_baseColor.jpg');
+const strapNormalMap = textureStraps.load('/textures/strap_normal.jpg');
+const strapORMMap = textureStraps.load('/textures/strap_occlusionRoughnessMetallic.jpg');
 strapBaseColor.wrapS = THREE.RepeatWrapping;
 strapBaseColor.wrapT = THREE.RepeatWrapping;
 strapBaseColor.repeat.set(1, -1);
@@ -61,9 +61,9 @@ export const strapsMaterial = new THREE.MeshPhysicalMaterial({
 
 /* fabric */
 const textureLoaderFabricBase = new THREE.TextureLoader();
-const fabricBaseColor = textureLoaderFabricBase.load('/assets/textures/fabric_baseColor.jpg');
-const fabricNormalMap = textureLoaderFabricBase.load('/assets/textures/fabric_normal.jpg');
-const fabricORMMap = textureLoaderFabricBase.load('/assets/textures/fabric_occlusionRoughnessMetallic.jpg');
+const fabricBaseColor = textureLoaderFabricBase.load('/textures/fabric_baseColor.jpg');
+const fabricNormalMap = textureLoaderFabricBase.load('/textures/fabric_normal.jpg');
+const fabricORMMap = textureLoaderFabricBase.load('/textures/fabric_occlusionRoughnessMetallic.jpg');
 fabricBaseColor.wrapS = THREE.RepeatWrapping;
 fabricBaseColor.wrapT = THREE.RepeatWrapping;
 fabricBaseColor.repeat.set(1, -1);
@@ -91,9 +91,9 @@ export const fabricMaterial = new THREE.MeshPhysicalMaterial({
 
 /* leather */
 const textureLoaderLeatherBase = new THREE.TextureLoader();
-const leatherBaseColor = textureLoaderLeatherBase.load('/assets/textures/leather_baseColor.jpg');
-const leatherNormalMap = textureLoaderLeatherBase.load('/assets/textures/leather_normal.jpg');
-const leatherORMMap = textureLoaderLeatherBase.load('/assets/textures/leather_occlusionRoughnessMetallic.jpg');
+const leatherBaseColor = textureLoaderLeatherBase.load('/textures/leather_baseColor.jpg');
+const leatherNormalMap = textureLoaderLeatherBase.load('/textures/leather_normal.jpg');
+const leatherORMMap = textureLoaderLeatherBase.load('/textures/leather_occlusionRoughnessMetallic.jpg');
 leatherBaseColor.wrapS = THREE.RepeatWrapping;
 leatherBaseColor.wrapT = THREE.RepeatWrapping;
 leatherBaseColor.repeat.set(1, -1);
@@ -120,9 +120,9 @@ export const leatherMaterial = new THREE.MeshPhysicalMaterial({
 
 /* hardware */
 const textureSivlerHardware = new THREE.TextureLoader();
-const silverBaseColor = textureSivlerHardware.load('/assets/textures/strap_baseColor.jpg');
-const silverNormalMap = textureSivlerHardware.load('/assets/textures/strap_normal.jpg');
-const silverORMMap = textureSivlerHardware.load('/assets/textures/strap_occlusionRoughnessMetallic.jpg');
+const silverBaseColor = textureSivlerHardware.load('/textures/strap_baseColor.jpg');
+const silverNormalMap = textureSivlerHardware.load('/textures/strap_normal.jpg');
+const silverORMMap = textureSivlerHardware.load('/textures/strap_occlusionRoughnessMetallic.jpg');
 silverBaseColor.wrapS = THREE.RepeatWrapping;
 silverBaseColor.wrapT = THREE.RepeatWrapping;
 silverBaseColor.repeat.set(1, -1);

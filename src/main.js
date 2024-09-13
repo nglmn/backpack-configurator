@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
-import { RectAreaLightHelper } from 'three/examples/jsm/helpers/RectAreaLightHelper.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 import { denimMaterial, strapsMaterial, silverMaterial, fabricMaterial, goldMaterial, leatherMaterial, blackMetalMaterial } from './materials';
 import { directionalLight, pointLight, rectLight } from './lights';
@@ -43,11 +43,11 @@ const renderer = new THREE.WebGLRenderer({ alpha: true });
 renderer.setSize(750, 750);
 modelContainer.appendChild(renderer.domElement);
 
-const pmremGenerator = new THREE.PMREMGenerator(renderer);
 
 /* HDRI map */
+const pmremGenerator = new THREE.PMREMGenerator(renderer);
 const hdriLoader = new RGBELoader()
-hdriLoader.load('assets/lebombo_2k.hdr', function (texture) {
+hdriLoader.load('/lebombo_2k.hdr', function (texture) {
   const envMap = pmremGenerator.fromEquirectangular(texture).texture;
   texture.dispose();
   scene.environment = envMap
@@ -60,7 +60,7 @@ renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 /* backpack */
 let backpack;
 const loader = new GLTFLoader();
-loader.load('/assets/backpack.glb', function (gltf) {
+loader.load('/backpack.glb', function (gltf) {
   backpack = gltf.scene;
   backpack.scale.set(1, 1, 1)
   backpack.position.set(0, 0, 0);
@@ -87,76 +87,68 @@ loader.load('/assets/backpack.glb', function (gltf) {
   });
 });
 
-
-/* backdrop plane */
-const planeGeometry = new THREE.PlaneGeometry(1, 1);
-const planeMaterial = new THREE.ShadowMaterial({ opacity: 0.5 })
-const plane = new THREE.Mesh(planeGeometry, planeMaterial);
-plane.position.set(0, -0.2, 0);
-plane.rotation.x = 90;
-plane.receiveShadow = true;
-scene.add(plane);
-
 /* lights */
 scene.add(directionalLight);
 scene.add(pointLight);
 scene.add(rectLight)
 
-/* mouse control */
-let isDragging = false;
-let previousMousePosition = { x: 0, y: 0 };
+// /* mouse control */
+// let isDragging = false;
+// let previousMousePosition = { x: 0, y: 0 };
 
-modelContainer.addEventListener('mousedown', () => {
-  isDragging = true;
-});
+// modelContainer.addEventListener('mousedown', () => {
+//   isDragging = true;
+// });
 
-modelContainer.addEventListener('mouseup', () => {
-  isDragging = false;
-});
+// modelContainer.addEventListener('mouseup', () => {
+//   isDragging = false;
+// });
 
-modelContainer.addEventListener('mousemove', (event) => {
-  if (isDragging && backpack) {
-    const deltaMove = {
-      x: event.clientX - previousMousePosition.x,
-      y: event.clientY - previousMousePosition.y
-    };
-    backpack.rotation.y += deltaMove.x * 0.005;
-    backpack.rotation.x -= deltaMove.y * 0.005;
-  }
-  previousMousePosition = {
-    x: event.clientX,
-    y: event.clientY
-  };
-});
+// modelContainer.addEventListener('mousemove', (event) => {
+//   if (isDragging && backpack) {
+//     const deltaMove = {
+//       x: event.clientX - previousMousePosition.x,
+//       y: event.clientY - previousMousePosition.y
+//     };
+//     backpack.rotation.y += deltaMove.x * 0.005;
+//     backpack.rotation.x -= deltaMove.y * 0.005;
+//   }
+//   previousMousePosition = {
+//     x: event.clientX,
+//     y: event.clientY
+//   };
+// });
 
-/* finger control */
-modelContainer.addEventListener('touchstart', (event) => {
-  isDragging = true;
-  previousMousePosition = {
-    x: event.touches[0].clientX,
-    y: event.touches[0].clientY
-  };
-});
+// /* finger control */
+// modelContainer.addEventListener('touchstart', (event) => {
+//   isDragging = true;
+//   previousMousePosition = {
+//     x: event.touches[0].clientX,
+//     y: event.touches[0].clientY
+//   };
+// });
 
-modelContainer.addEventListener('touchend', (event) => {
-  isDragging = false;
-});
+// modelContainer.addEventListener('touchend', (event) => {
+//   isDragging = false;
+// });
 
-modelContainer.addEventListener('touchmove', (event) => {
-  if (isDragging && backpack) {
-    const deltaMove = {
-      x: event.touches[0].clientX - previousMousePosition.x,
-      y: event.touches[0].clientY - previousMousePosition.y
-    };
-    backpack.rotation.y += deltaMove.x * 0.01;
-    backpack.rotation.x -= deltaMove.y * 0.01;
-    previousMousePosition = {
-      x: event.touches[0].clientX,
-      y: event.touches[0].clientY
-    };
-  }
-});
+// modelContainer.addEventListener('touchmove', (event) => {
+//   if (isDragging && backpack) {
+//     const deltaMove = {
+//       x: event.touches[0].clientX - previousMousePosition.x,
+//       y: event.touches[0].clientY - previousMousePosition.y
+//     };
+//     backpack.rotation.y += deltaMove.x * 0.01;
+//     backpack.rotation.x -= deltaMove.y * 0.01;
+//     previousMousePosition = {
+//       x: event.touches[0].clientX,
+//       y: event.touches[0].clientY
+//     };
+//   }
+// });
 
+/* orbit controls */
+const orbitControls = new OrbitControls(camera, renderer.domElement);
 
 /* render animation */
 function render() {
@@ -164,6 +156,7 @@ function render() {
   if (backpack) {
     backpack.rotation.y += 0.002
   }
+  orbitControls.update()
   renderer.render(scene, camera);
 }
 

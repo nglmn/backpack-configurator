@@ -11,23 +11,7 @@
 			rel="stylesheet"
 		/>
 		<link rel="stylesheet" href="/src/style/style.css" />
-
-		<!-- <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-		<script src="https://cdn.rawgit.com/jeromeetienne/ar.js/master/aframe/build/aframe-ar.js"></script> -->
-	</head>
 	<body>
-		<!-- <a-scene id="a-scene" embedded arj>
-			<a-marker type="pattern" url="pattern-qr (1).patt">
-				<a-entity
-					id="backpack-model"
-					gltf-model="url(backpack.glb)"
-					scale="1 1 1"
-					position="0 0 0"
-				></a-entity>
-			</a-marker>
-			<a-entity camera></a-entity>
-		</a-scene> -->
-
 		<button class="ar-btn">
 			<svg width="13" height="13">
 				<use href="/icons.svg#icon-Vector" />
@@ -35,9 +19,9 @@
 			See in Real Life
 		</button>
 		<div class="container">
-			<div class="model-container"></div>
+			<div class="model-container">
 			<div class="controls-container">
-				<ul>
+				<ul class="controls-list">
 					<li>
 						<h3>body color</h3>
 						<div class="body-color-controls controls">
@@ -90,13 +74,12 @@
 							<input
 								type="radio"
 								name="hardware-color"
-								value="black"
+								value="metalic-black"
 								id="black-hw"
 							/>
 							<label for="black-hw">Black</label>
 						</div>
 					</li>
-
 					<li>
 						<h3>material</h3>
 						<div class="material-controls controls">

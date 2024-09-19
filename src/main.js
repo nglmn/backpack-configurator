@@ -104,11 +104,15 @@ loader.load('backpack.glb', function (gltf) {
 /* orbit controls */
 const orbitControls = new OrbitControls(camera, renderer.domElement);
 orbitControls.enableZoom = false;
+orbitControls.enablePan = false;
 adjustControls();
 
 /* render animation */
 function render() {
   requestAnimationFrame(render);
+  if (backpack) {
+    backpack.position.set(0, 0, 0.1);
+  }
   orbitControls.update()
   renderer.render(scene, camera);
 }

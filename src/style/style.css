@@ -61,7 +61,7 @@ canvas{
   position: absolute;
   margin: 0 auto;
   z-index: 1;
-  bottom: 25px;
+  bottom: 10px;
 }
 .controls-list{
   display: flex;
